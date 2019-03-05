@@ -7,6 +7,9 @@ from rdflib.namespace import Namespace
 
 app = flask.Flask(__name__)
 
+test = os.environ['TEST']
+print(f"{test}")
+
 
 @app.route("/", methods=['GET'])
 def home():
