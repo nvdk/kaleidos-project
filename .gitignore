@@ -15,3 +15,4 @@
 properties-to-add
 .idea/
 /minister-jurisdiction-service/venv
+/belga-ftp-service/credentials.py
