@@ -2,13 +2,11 @@ import flask
 import os
 import helpers
 import builtins
+from ftplib import FTP
 from escape_helpers import sparql_escape
 from rdflib.namespace import Namespace
 
 app = flask.Flask(__name__)
-
-test = os.environ['TEST']
-print(f"{test}")
 
 
 @app.route("/", methods=['GET'])
