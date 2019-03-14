@@ -2,17 +2,18 @@ import flask
 import os
 import helpers
 import builtins
-from ftplib import FTP
 from escape_helpers import sparql_escape
 from rdflib.namespace import Namespace
+from .belgaftp import BelgaFTPService
 
 app = flask.Flask(__name__)
+BELGA_USER = os.environ['BELGA_USER']
+BELGA_PWD = os.environ['BELGA_PWD']
 
 
 @app.route("/", methods=['GET'])
 def home():
-    return "Service is up and running"
-
+    return "Belga FTP service is up and running"
 
 
 """

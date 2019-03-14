@@ -88,6 +88,8 @@ services:
       - 8090:80
     environment:
       MODE: "development"
+      BELGA_USER: "TODO INSERT ON SERVER"
+      BELGA_PWD: "TODO INSERT ON SERVER"
     links:
       - db:database
     volumes:
