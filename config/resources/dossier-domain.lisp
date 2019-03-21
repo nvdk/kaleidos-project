@@ -1,7 +1,7 @@
 (define-resource case ()
   :class (s-prefix "besluitvorming:Consultatievraag")
   :properties `((:created :datetime ,(s-prefix "dct:created")) ;; NOTE: Type should be :date instead?
-                (:shortTitle :string ,(s-prefix "dct:alternative"))
+                (:short-title :string ,(s-prefix "dct:alternative"))
                 (:number :number ,(s-prefix "adms:identifier")) ;; NOTE: Type should be :number instead?
                 (:title :string ,(s-prefix "dct:title"))
                 (:policy-level :string ,(s-prefix "ext:beleidsNiveau")))
@@ -41,11 +41,11 @@
                 (:show-as-remark :boolean ,(s-prefix "ext:wordtGetoondAlsMededeling"))) ;; NOTE: supplementary addition to model
   :has-one `((decision :via ,(s-prefix "ext:besluitHeeftProcedurestap") ;; NOTE: instead of dct:hasPart (mu-cl-resources relation type checking workaround)
                        :as "decision")
-             (subcase-phase :via ,(s-prefix "ext:procedurestapFase")
-                            :as "phase")
              (case   :via ,(s-prefix "dct:hasPart")
                      :inverse t
-                     :as "case"))
+                     :as "case")
+             (meeting :via ,(s-prefix "besluitvorming:isAangevraagdVoor")
+                       :as "requested-for-meeting"))
   :has-many `(
               (theme :via ,(s-prefix "dct:subject")
                      :as "themes")
@@ -61,12 +61,15 @@
                              :as "related-to")
               (document-version :via ,(s-prefix "ext:bevatDocumentversie") ;; NOTE: instead of dct:hasPart (mu-cl-resources relation type checking workaround)
                                :as "document-versions")
-              (consulation-request :via ,(s-prefix "ext:bevatConsultatievraag") ;; NOTE: instead of dct:hasPart (mu-cl-resources relation type checking workaround)
+              (document-vo-identifier :via ,(s-prefix "ext:procedurestap") ;; NOTE: instead of dct:hasPart (mu-cl-resources relation type checking workaround)
+                               :inverse t
+                               :as "document-identifiers")
+              (consultation-request :via ,(s-prefix "ext:bevatConsultatievraag") ;; NOTE: instead of dct:hasPart (mu-cl-resources relation type checking workaround)
                                    :as "consultationRequests") ;; NOTE: consultatieVRAGEN would be more suitable?
               (agendaitem :via ,(s-prefix "besluitvorming:isGeagendeerdVia")
                           :as "agendaitems")
-              (meeting :via ,(s-prefix "besluitvorming:isAangevraagdVoor")
-                       :as "requestedForMeetings")
+              (subcase-phase :via ,(s-prefix "ext:subcaseProcedurestapFase")
+                              :as "phases")
               (remark :via ,(s-prefix "besluitvorming:opmerking") 
                       :as "remarks"))
   :resource-base (s-url "http://data.vlaanderen.be/id/Procedurestap/")
@@ -78,7 +81,7 @@
   :properties `((:remark :string ,(s-prefix "rdfs:comment"))
                 (:label :string ,(s-prefix "skos:prefLabel"))
                 (:date :datetime ,(s-prefix "besluitvorming:statusdatum")))
-  :has-many `((procedurestap :via ,(s-prefix "ext:procedurestapFase")
+  :has-one `((subcase :via ,(s-prefix "ext:subcaseProcedurestapFase")
                           :inverse t
                           :as "subcases"))
   :has-one `((subcase-phase-code :via ,(s-prefix "ext:procedurestapFaseCode")

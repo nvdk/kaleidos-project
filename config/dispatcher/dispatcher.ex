@@ -42,13 +42,19 @@ defmodule Dispatcher do
   match "/meetings/*path" do
     Proxy.forward conn, path, "http://resource/meetings/"
   end
-  
+  match "/meeting-records/*path" do
+    Proxy.forward conn, path, "http://resource/meeting-records/"
+  end
   match "/documents/*path" do
     Proxy.forward conn, path, "http://resource/documents/"
   end
 
   match "/document-versions/*path" do
     Proxy.forward conn, path, "http://resource/document-versions/"
+  end
+
+  match "/document-types/*path" do
+    Proxy.forward conn, path, "http://resource/document-types/"
   end
 
   match "/document-type-codes/*path" do
@@ -63,7 +69,6 @@ defmodule Dispatcher do
   match "/media-type-codes/*path" do
     Proxy.forward conn, path, "http://resource/media-type-codes/"
   end
-  
   match "/cases/*path" do
     Proxy.forward conn, path, "http://resource/cases/"
   end
@@ -73,10 +78,10 @@ defmodule Dispatcher do
   match "/subcases/*path" do
     Proxy.forward conn, path, "http://resource/subcases/"
   end
-  match "/procedurestap-fases/*path" do
-    Proxy.forward conn, path, "http://resource/procedurestap-fases/"
+  match "/subcase-phases/*path" do
+    Proxy.forward conn, path, "http://resource/subcase-phases/"
   end
-  match "/procedurestap-fase-codes/*path" do
+  match "/subcase-phase-codes/*path" do
     Proxy.forward conn, path, "http://resource/procedurestap-fase-codes/"
   end
   match "/vertrouwelijkheid-codes/*path" do
@@ -124,8 +129,8 @@ defmodule Dispatcher do
   match "/responsibilities/*path" do
     Proxy.forward conn, path, "http://resource/responsibilities/"
   end
-  match "/persons/*path" do
-    Proxy.forward conn, path, "http://resource/persons/"
+  match "/people/*path" do
+    Proxy.forward conn, path, "http://resource/people/"
   end
   match "/genders/*path" do
     Proxy.forward conn, path, "http://resource/genders/"
@@ -159,6 +164,9 @@ defmodule Dispatcher do
   match "/publication-states/*path" do
     Proxy.forward conn, path, "http://resource/publication-states/"
   end
+  match "/document-vo-identifiers/*path" do
+    Proxy.forward conn, path, "http://resource/document-vo-identifiers/"
+  end
   match "/publication-state-codes/*path" do
     Proxy.forward conn, path, "http://resource/publication-state-codes/"
   end
@@ -181,7 +189,11 @@ defmodule Dispatcher do
 
   match "/agenda-sort/*path" do
     Proxy.forward conn, path, "http://agenda-sort-service/"
-  end 
+  end
+
+  match "/custom-subcases/*path" do
+    Proxy.forward conn, path, "http://custom-subcases-service/"
+  end
 
    match "/session-service/*path" do
     Proxy.forward conn, path, "http://session-number-service/"
