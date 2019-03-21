@@ -29,5 +29,9 @@
 properties-to-add
 .idea/
 /minister-jurisdiction-service/venv
+<<<<<<< HEAD
+belga-ftp-service/credentials.py
+=======
 /minister-jurisdiction-service/__pycache__/*
 
+>>>>>>> development
