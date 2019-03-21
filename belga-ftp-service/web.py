@@ -10,10 +10,18 @@ app = flask.Flask(__name__)
 BELGA_USER = os.environ['BELGA_USER']
 BELGA_PWD = os.environ['BELGA_PWD']
 
+belga_service = BelgaFTPService()
+
 
 @app.route("/", methods=['GET'])
 def home():
     return "Belga FTP service is up and running"
+
+
+@app.route("/dir", methods=["GET"])
+def get_ftp_files():
+    files = belga_service.get_repository("vlatest", "alvalv")
+    return files
 
 
 """
