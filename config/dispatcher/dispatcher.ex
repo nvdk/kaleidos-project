@@ -82,10 +82,13 @@ defmodule Dispatcher do
     Proxy.forward conn, path, "http://resource/subcase-phases/"
   end
   match "/subcase-phase-codes/*path" do
-    Proxy.forward conn, path, "http://resource/procedurestap-fase-codes/"
+    Proxy.forward conn, path, "http://resource/subcase-phase-codes/"
   end
-  match "/vertrouwelijkheid-codes/*path" do
-    Proxy.forward conn, path, "http://resource/vertrouwelijkheid-codes/"
+  match "/confidentialities/*path" do
+    Proxy.forward conn, path, "http://resource/confidentialities/"
+  end
+  match "/approvals/*path" do
+    Proxy.forward conn, path, "http://resource/approvals/"
   end
   match "/consultation-requests/*path" do
     Proxy.forward conn, path, "http://resource/consultation-requests/"
