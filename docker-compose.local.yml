@@ -75,3 +75,21 @@ services:
       - db:database
     volumes:
       - ./minister-jurisdiction-service:/app
+  belga-ftp-service:
+    image: mikidi/mu-python-template:python3-port
+    environment:
+      MODE: "development"
+      BELGA_USER: "TODO INSERT ON SERVER"
+      BELGA_PWD: "TODO INSERT ON SERVER"
+    links:
+      - db:database
+    volumes:
+      - ./belga-ftp-service:/app
+  api-parlement-service:
+    image: mikidi/mu-python-template:python3-port
+    environment:
+      MODE: "development"
+    links:
+      - db:database
+    volumes:
+      - ./api-parlement-service:/app

@@ -195,12 +195,20 @@ defmodule Dispatcher do
     Proxy.forward conn, path, "http://custom-subcases-service/"
   end
 
-   match "/session-service/*path" do
+  match "/session-service/*path" do
     Proxy.forward conn, path, "http://session-number-service/"
   end
 
   match "/agenda-approve/*path" do
     Proxy.forward conn, path, "http://agenda-approve-service/"
+  end
+
+  match "/minister-jurisdiction/*path" do
+    Proxy.forward conn, path, "http://minister-jurisdiction/"
+  end
+
+  match "/belga-ftp-service/*path" do
+    Proxy.forward conn, path, "http://belga-ftp-service/"
   end
 
   match "/files/*path" do

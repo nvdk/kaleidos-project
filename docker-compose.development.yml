@@ -82,6 +82,18 @@ services:
       - development-database:database
     volumes:
       - ./minister-jurisdiction-service:/app
+  development-belga-ftp-service:
+    image: mikidi/mu-python-template:python3-port
+    ports:
+      - 8090:80
+    environment:
+      MODE: "development"
+      BELGA_USER: "TODO INSERT ON SERVER"
+      BELGA_PWD: "TODO INSERT ON SERVER"
+    links:
+      - development-database:database
+    volumes:
+      - ./belga-ftp-service:/app
 
 networks:
   proxy:
