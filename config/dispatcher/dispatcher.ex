@@ -214,6 +214,10 @@ defmodule Dispatcher do
     Proxy.forward conn, path, "http://belga-ftp-service/"
   end
 
+  match "/api-parlement-service/*path" do
+    Proxy.forward conn, path, "http://api-parlement-service/"
+  end
+
   match "/files/*path" do
     Proxy.forward conn, path, "http://file/files/"
   end

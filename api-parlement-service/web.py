@@ -13,6 +13,16 @@ def home():
     return "API Vlaams Parlement service is up and running"
 
 
+@app.route("/domain/transfer", methods=['POST'])
+def transfer_domain():
+    req = flask.request.json
+    receiving_mandatee = req['receiving_mandatee']
+    q = f"""
+        
+    """
+    return flask.jsonify(helpers.query(q))
+
+
 """
 Vocabularies
 """
@@ -38,4 +48,4 @@ if __name__ == '__main__':
     except Exception as e:
         helpers.log(str(e))
     debug = True if (os.environ.get('MODE') == "development") else False
-    app.run(debug=debug, host='0.0.0.0', port=8091)
+    app.run(debug=debug, host='0.0.0.0')

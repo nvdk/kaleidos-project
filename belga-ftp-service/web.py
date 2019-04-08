@@ -49,4 +49,4 @@ if __name__ == '__main__':
     except Exception as e:
         helpers.log(str(e))
     debug = True if (os.environ.get('MODE') == "development") else False
-    app.run(debug=debug, host='0.0.0.0', port=8089)
+    app.run(debug=debug, host='0.0.0.0')
