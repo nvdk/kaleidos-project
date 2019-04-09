@@ -20,7 +20,7 @@ def home():
 
 @app.route("/dir", methods=["GET"])
 def get_ftp_files():
-    files = belga_service.get_repository("vlatest", "alvalv")
+    files = belga_service.get_repository("user", "pass")
     return files
 
 
