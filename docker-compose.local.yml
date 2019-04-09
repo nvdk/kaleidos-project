@@ -76,7 +76,7 @@ services:
     volumes:
       - ./minister-jurisdiction-service:/app
   belga-ftp-service:
-    image: mikidi/mu-python-template:python3-port
+    build: belga-ftp-service
     environment:
       MODE: "development"
       BELGA_USER: "TODO INSERT ON SERVER"
