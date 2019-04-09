@@ -13,38 +13,53 @@ def home():
     return "API Vlaams Parlement service is up and running"
 
 
+def get_files(phase):
+    files = list()
+    q = f"""
+            PREFIX core: <http://mu.semte.ch/vocabularies/core/>
+            PREFIX mandaat: <http://data.vlaanderen.be/ns/mandaat#>
+            PREFIX persoon: <http://data.vlaanderen.be/ns/persoon#>
+            PREFIX dct: <http://purl.org/dc/terms/>
+            PREFIX ext: <http://mu.semte.ch/vocabularies/ext/>
+            PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+            PREFIX adms: <http://www.w3.org/ns/adms#>
+            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+            PREFIX dbpedia: <http://dbpedia.org/ontology/>
+            PREFIX besluitvorming: <http://data.vlaanderen.be/ns/besluitvorming#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX nfo: <http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#>
+
+            SELECT *
+            WHERE {{
+                GRAPH <http://mu.semte.ch/application> {{
+                    ?subcase a dbpedia:UnitOfWork .
+                    ?subcase ext:subcaseProcedurestapFase ?phase .
+                    ?subcase ext:bevatDocumentversie ?docVersie .
+                    ?docVersie ext:file ?file .
+                    ?phase ext:procedurestapFaseCode ?code .
+                    ?code skos:prefLabel ?label .
+                    FILTER(?phase = <{phase}>)
+                }}
+            }}
+        """
+    response = helpers.query(q)
+    try:
+        for file in response['results']['bindings']:
+            f_dict = dict()
+            for key, obj in file.items():
+                f_dict[key] = obj['value']
+            files.append(f_dict)
+    except:
+        print("Could not parse results")
+    return files
+
+
 @app.route("/parlement/push", methods=['POST'])
 def push_to_parliament():
     req = flask.request.json
     procedurestapfase = req['procedurestapfase']
-    q = f"""
-        PREFIX core: <http://mu.semte.ch/vocabularies/core/>
-        PREFIX mandaat: <http://data.vlaanderen.be/ns/mandaat#>
-        PREFIX persoon: <http://data.vlaanderen.be/ns/persoon#>
-        PREFIX dct: <http://purl.org/dc/terms/>
-        PREFIX ext: <http://mu.semte.ch/vocabularies/ext/>
-        PREFIX foaf: <http://xmlns.com/foaf/0.1/>
-        PREFIX adms: <http://www.w3.org/ns/adms#>
-        PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
-        PREFIX dbpedia: <http://dbpedia.org/ontology/>
-        PREFIX besluitvorming: <http://data.vlaanderen.be/ns/besluitvorming#>
-        PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-        PREFIX nfo: <http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#>
-        
-        SELECT *
-        WHERE {{
-            GRAPH <http://mu.semte.ch/application> {{
-                ?subcase a dbpedia:UnitOfWork .
-                ?subcase ext:subcaseProcedurestapFase ?phase .
-                ?subcase ext:bevatDocumentversie ?docVersie .
-                ?docVersie ext:file ?file .
-                ?phase ext:procedurestapFaseCode ?code .
-                ?code skos:prefLabel ?label .
-                FILTER(?phase = <{procedurestapfase}>)
-            }}
-        }}
-    """
-    return flask.jsonify(helpers.query(q))
+
+    return flask.jsonify(get_files(procedurestapfase))
 
 
 """

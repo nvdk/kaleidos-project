@@ -7,8 +7,8 @@ from rdflib.namespace import Namespace
 from .belgaftp import BelgaFTPService
 
 app = flask.Flask(__name__)
-BELGA_USER = os.environ['BELGA_USER']
-BELGA_PWD = os.environ['BELGA_PWD']
+BELGA_USER = os.environ['BELGA_USER']  # TODO fix on server
+BELGA_PWD = os.environ['BELGA_PWD']  # TODO fix on server
 
 belga_service = BelgaFTPService()
 
@@ -20,7 +20,7 @@ def home():
 
 @app.route("/dir", methods=["GET"])
 def get_ftp_files():
-    files = belga_service.get_repository("user", "pass")
+    files = belga_service.get_repository(BELGA_USER, BELGA_PWD)
     return files
 
 
