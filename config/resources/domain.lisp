@@ -22,5 +22,6 @@
 (read-domain-file "mandaat-domain.lisp")
 (read-domain-file "organisatie-domain.lisp")
 (read-domain-file "publicatie-domain.lisp")
+;; LEGACY: ignore all below
 (read-domain-file "master-users-domain.lisp")
 (read-domain-file "alerts-domain.lisp")

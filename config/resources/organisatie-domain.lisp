@@ -1,3 +1,4 @@
+;; LEGACY: leave entire file blank
 (define-resource site ()
   :class (s-prefix "org:Site")
   :has-one `((contact-point :via ,(s-prefix "schema:contactPoint")
