@@ -63,6 +63,8 @@
              (agendaitem :via ,(s-prefix "besluitvorming:opmerking")
                          :inverse t
                          :as "agendaitem"))
+  :has-many `((remark    :via ,(s-prefix "ext:antwoorden")
+                         :as "answers"))
   :resource-base (s-url "http://data.vlaanderen.be/id/Opmerking/")
   :features '(include-uri)
   :on-path "remarks")
@@ -91,7 +93,6 @@
   :class (s-prefix "ext:ThemaCode") ;; NOTE: as well as skos:Concept
   :properties `((:label :string ,(s-prefix "skos:prefLabel"))
                 (:scope-note :string ,(s-prefix "skos:scopeNote")))
-  
   :resource-base (s-url "http://data.vlaanderen.be/id/concept/ThemaCode/")
   :features '(include-uri)
   :on-path "themes")
