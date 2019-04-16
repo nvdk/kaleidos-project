@@ -18,29 +18,16 @@ def home():
     return "Belga FTP service is up and running"
 
 
-def push_to_belga():
-    xmlfile = belga_service.build_xml()
-
-
 @app.route("/agenda/publish", methods=['POST'])
 def publish():
     req = flask.request.json
     agenda = req['agenda']
     q = f"""
-        PREFIX core: <http://mu.semte.ch/vocabularies/core/>
-        PREFIX mandaat: <http://data.vlaanderen.be/ns/mandaat#>
-        PREFIX persoon: <http://data.vlaanderen.be/ns/persoon#>
-        PREFIX dct: <http://purl.org/dc/terms/>
-        PREFIX ext: <http://mu.semte.ch/vocabularies/ext/>
-        PREFIX foaf: <http://xmlns.com/foaf/0.1/>
-        PREFIX adms: <http://www.w3.org/ns/adms#>
-        PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
-        PREFIX dbpedia: <http://dbpedia.org/ontology/>
         PREFIX besluitvorming: <http://data.vlaanderen.be/ns/besluitvorming#>
-        PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-        PREFIX nfo: <http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#>
-        PREFIX besluit: <http://data.vlaanderen.be/ns/besluit#>
+        PREFIX dct: <http://purl.org/dc/terms/>
         PREFIX prov: <http://www.w3.org/ns/prov#>
+        PREFIX dbpedia: <http://dbpedia.org/ontology/>
+        PREFIX ext: <http://mu.semte.ch/vocabularies/ext/>
         
         SELECT *
         WHERE {{
@@ -112,12 +99,5 @@ if __name__ == '__main__':
     builtins.app = app
     builtins.helpers = helpers
     builtins.sparql_escape = sparql_escape
-    app_file = os.environ.get('APP_ENTRYPOINT')
-    f = open('/app/__init__.py', 'w+')
-    f.close()
-    try:
-        exec("from ext.app.%s import *" % app_file)
-    except Exception as e:
-        helpers.log(str(e))
     debug = True if (os.environ.get('MODE') == "development") else False
     app.run(debug=debug, host='0.0.0.0')

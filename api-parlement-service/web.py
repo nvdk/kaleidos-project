@@ -80,8 +80,6 @@ if __name__ == '__main__':
     builtins.helpers = helpers
     builtins.sparql_escape = sparql_escape
     app_file = os.environ.get('APP_ENTRYPOINT')
-    f = open('/app/__init__.py', 'w+')
-    f.close()
     try:
         exec("from ext.app.%s import *" % app_file)
     except Exception as e:

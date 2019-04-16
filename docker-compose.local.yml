@@ -68,7 +68,7 @@ services:
     volumes:
       - ./agenda-approve-service:/app
   minister-jurisdiction-service:
-    image: mikidi/mu-python-template:python3-port
+    build: minister-jurisdiction-service
     environment:
       MODE: "development"
     links:
@@ -86,7 +86,7 @@ services:
     volumes:
       - ./belga-ftp-service:/app
   api-parlement-service:
-    image: mikidi/mu-python-template:python3-port
+    build: api-parlement-service
     environment:
       MODE: "development"
     links:
