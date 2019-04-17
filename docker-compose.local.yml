@@ -89,7 +89,7 @@ services:
     build: api-parlement-service
     environment:
       MODE: "development"
-      URL_API_PARLEMENT: "TODO"
+      URL_API_PARLEMENT: "http://TODO"
     links:
       - db:database
     volumes:

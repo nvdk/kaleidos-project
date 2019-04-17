@@ -20,46 +20,6 @@ def home():
     return "API Vlaams Parlement service is up and running"
 
 
-@app.route("/test/files", methods=['GET'])
-def create_files_locally():  # TODO remove
-
-    q = f"""
-        PREFIX ext: <http://mu.semte.ch/vocabularies/ext/>
-        PREFIX dbpedia: <http://dbpedia.org/ontology/>
-        
-        SELECT ?file, ?extension
-        WHERE {{
-          GRAPH <http://mu.semte.ch/application> {{
-            ?docVersie a ext:DocumentVersie .
-            ?docVersie ext:file ?file .
-            ?file dbpedia:fileExtension ?extension .
-          }}
-        }}
-    """
-    response = helpers.query(q)
-    files = list()
-    try:
-        for file in response['results']['bindings']:
-            try:
-                f_dict = dict()
-                for key, obj in file.items():
-                    f_dict[key] = obj['value']
-                files.append(f_dict)
-            except:
-                print("File parse error")
-    except:
-        print("Couldn't get files")
-    """
-    for f in files:
-        comp = f.split('/')
-        fid = comp[len(comp)-1]
-        temp = open(f"{folder}/{fid}.txt", "w")
-        temp.write("test file")
-        temp.close()
-    """
-    return flask.jsonify(files)
-
-
 def get_dict_value(obj, key, default):
     if key in obj:
         return obj[key]
@@ -82,7 +42,7 @@ def PrintException():
     print('EXCEPTION IN ({}, LINE {} "{}"): {}'.format(filename, lineno, line.strip(), exc_obj))
 
 
-@app.route("/parlement/push/new", methods=['POST'])  # TODO cleanup code
+@app.route("/parlement/push", methods=['POST'])  # TODO cleanup code
 def new_push():
     try:
         req = flask.request.json
@@ -90,20 +50,11 @@ def new_push():
         ps_comp = procedurestap.split('/')
         ps_id = ps_comp[len(ps_comp)-1]
         q = f"""
-            PREFIX core: <http://mu.semte.ch/vocabularies/core/>
-            PREFIX mandaat: <http://data.vlaanderen.be/ns/mandaat#>
-            PREFIX persoon: <http://data.vlaanderen.be/ns/persoon#>
-            PREFIX dct: <http://purl.org/dc/terms/>
-            PREFIX ext: <http://mu.semte.ch/vocabularies/ext/>
-            PREFIX foaf: <http://xmlns.com/foaf/0.1/>
-            PREFIX adms: <http://www.w3.org/ns/adms#>
-            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
             PREFIX dbpedia: <http://dbpedia.org/ontology/>
-            PREFIX besluitvorming: <http://data.vlaanderen.be/ns/besluitvorming#>
-            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX ext: <http://mu.semte.ch/vocabularies/ext/>
+            PREFIX dct: <http://purl.org/dc/terms/>
             PREFIX nfo: <http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#>
-            PREFIX besluit: <http://data.vlaanderen.be/ns/besluit#>
-            PREFIX prov: <http://www.w3.org/ns/prov#>
+            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
             
             SELECT *
             WHERE {{
@@ -168,55 +119,6 @@ def new_push():
     except Exception as e:
         PrintException()
         return flask.jsonify({"message": "Internal server error", "code": 500})
-
-
-def get_files(phase):
-    files = list()
-    q = f"""
-            PREFIX core: <http://mu.semte.ch/vocabularies/core/>
-            PREFIX mandaat: <http://data.vlaanderen.be/ns/mandaat#>
-            PREFIX persoon: <http://data.vlaanderen.be/ns/persoon#>
-            PREFIX dct: <http://purl.org/dc/terms/>
-            PREFIX ext: <http://mu.semte.ch/vocabularies/ext/>
-            PREFIX foaf: <http://xmlns.com/foaf/0.1/>
-            PREFIX adms: <http://www.w3.org/ns/adms#>
-            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
-            PREFIX dbpedia: <http://dbpedia.org/ontology/>
-            PREFIX besluitvorming: <http://data.vlaanderen.be/ns/besluitvorming#>
-            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-            PREFIX nfo: <http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#>
-
-            SELECT *
-            WHERE {{
-                GRAPH <http://mu.semte.ch/application> {{
-                    ?subcase a dbpedia:UnitOfWork .
-                    ?subcase ext:subcaseProcedurestapFase ?phase .
-                    ?subcase ext:bevatDocumentversie ?docVersie .
-                    ?docVersie ext:file ?file .
-                    ?phase ext:procedurestapFaseCode ?code .
-                    ?code skos:prefLabel ?label .
-                    FILTER(?phase = <{phase}>)
-                }}
-            }}
-        """
-    response = helpers.query(q)
-    try:
-        for file in response['results']['bindings']:
-            f_dict = dict()
-            for key, obj in file.items():
-                f_dict[key] = obj['value']
-            files.append(f_dict)
-    except:
-        print("Could not parse results")
-    return files
-
-
-@app.route("/parlement/push", methods=['POST'])
-def push_to_parliament():
-    req = flask.request.json
-    procedurestapfase = req['procedurestapfase']
-
-    return flask.jsonify(get_files(procedurestapfase))
 
 
 """
