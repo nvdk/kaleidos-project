@@ -2,7 +2,6 @@
   :class (s-prefix "dbpedia:Case")
   :properties `((:created       :datetime ,(s-prefix "dct:created")) ;; NOTE: Type should be :date instead?
                 (:short-title   :string   ,(s-prefix "dct:alternative"))
-                (:number        :number   ,(s-prefix "adms:identifier")) ;; NOTE: Type should be :number instead?
                 (:is-archived   :boolean   ,(s-prefix "ext:isGearchiveerd"))
                 (:title         :string   ,(s-prefix "dct:title"))
                 (:policy-level  :string   ,(s-prefix "ext:beleidsNiveau")))
@@ -13,7 +12,7 @@
               (person           :via      ,(s-prefix "besluitvorming:heeftIndiener") ;; NOTE: used persoon instead of agent
                                 :as "creators")
               (person           :via      ,(s-prefix "besluitvorming:heeftContactpersoon") ;; NOTE: used persoon instead of agent
-                                :as "contactPersons")
+                                :as "contact-persons")
               (subcase          :via      ,(s-prefix "dct:hasPart")
                                 :as "subcases")
               (case             :via      ,(s-prefix "dct:relation")
@@ -38,6 +37,7 @@
   :class (s-prefix "dbpedia:UnitOfWork")
   :properties `((:short-title         :string ,(s-prefix "dct:alternative"))
                 (:title               :string ,(s-prefix "dct:title"))
+                (:number        :number   ,(s-prefix "adms:identifier")) ;; This is the sequence number of the subcase of all subcases since the start of the year that have appeared on an official agenda
                 (:is-archived         :boolean   ,(s-prefix "ext:isProcedurestapGearchiveerd"))
                 (:formally-ok         :boolean  ,(s-prefix "besluitvorming:formeelOK")) ;; NOTE: What is the URI of property 'formeelOK'? Made up besluitvorming:formeelOK
                 (:created             :datetime ,(s-prefix "dct:created"))
@@ -48,6 +48,8 @@
              (case                    :via ,(s-prefix "dct:hasPart")
                                       :inverse t
                                       :as "case")
+             (agendaitem              :via ,(s-prefix "ext:eersteKeerOpgenomenInAgenda")
+                                      :as "first-agenda-occurrence")
              (meeting                 :via ,(s-prefix "besluitvorming:isAangevraagdVoor")
                                       :as "requested-for-meeting")
              (confidentiality         :via ,(s-prefix "besluitvorming:vertrouwelijkheid")
@@ -66,7 +68,7 @@
                                       :as "related-to")
               (document-version       :via ,(s-prefix "ext:bevatDocumentversie") ;; NOTE: instead of dct:hasPart (mu-cl-resources relation type checking workaround)
                                       :as "document-versions")
-              (document-vo-identifier :via ,(s-prefix "ext:procedurestap") ;; NOTE: instead of dct:hasPart (mu-cl-resources relation type checking workaround)
+              (document-vo-identifier :via ,(s-prefix "ext:procedurestap")  
                                       :inverse t
                                       :as "document-identifiers")
               (consultation-request   :via ,(s-prefix "ext:bevatConsultatievraag") ;; NOTE: instead of dct:hasPart (mu-cl-resources relation type checking workaround)

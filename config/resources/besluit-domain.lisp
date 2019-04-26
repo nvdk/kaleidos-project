@@ -45,13 +45,15 @@
              (subcase                 :via      ,(s-prefix "besluitvorming:isGeagendeerdVia")
                                       :inverse t
                                       :as "subcase")
+             (subcase                 :via      ,(s-prefix "ext:eersteKeerOpgenomenInAgenda")
+                                      :inverse t
+                                      :as "first-agenda-occurrence-of")
              (decision                :via      ,(s-prefix "ext:agendapuntHeeftBesluit") ;; instead of prov:generated (mu-cl-resources relation type checking workaround)
                                       :as "decision")
              (agenda                  :via      ,(s-prefix "dct:hasPart")
                                       :inverse t
                                       :as "agenda")
              (newsletter-info         :via      ,(s-prefix "ext:nieuwsbriefInfo") ;; instead of prov:generated (mu-cl-resources relation type checking workaround)
-                                      :inverse t
                                       :as "newsletter-info")
              (meeting-record          :via      ,(s-prefix "ext:notulenVanAgendaPunt")
                                       :as "meeting-record")

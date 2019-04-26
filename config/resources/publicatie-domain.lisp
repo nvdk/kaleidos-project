@@ -77,6 +77,7 @@
                 (:publication-doc-date :datetime ,(s-prefix "ext:issuedDocDate"))
                 (:title :string ,(s-prefix "dct:title")))
   :has-one `((agendaitem :via ,(s-prefix "ext:nieuwsbriefInfo") ;; NOTE: What is the domain of Besluit geeftAanleidingTot? guessed prov:generated
+                         :inverse t
                          :as "agendaitem")
              (meeting    :via ,(s-prefix "ext:algemeneNieuwsbrief")
                          :inverse t

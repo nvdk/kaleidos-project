@@ -4,7 +4,6 @@
                 (:title           :string ,(s-prefix "dct:title")) ;;string-set
                 (:description     :string ,(s-prefix "ext:omschrijving")) ;;string-set
                 (:created         :datetime ,(s-prefix "dct:created"))
-                (:number-vp       :string ,(s-prefix "besluitvorming:stuknummerVP")) ;; NOTE: What is the URI of property 'stuknummerVP'? Made up besluitvorming:stuknummerVP
                 (:number-vr       :string ,(s-prefix "besluitvorming:stuknummerVR"))) ;; NOTE: What is the URI of property 'stuknummerVR'? Made up besluitvorming:stuknummerVR
   :has-many `((remark             :via ,(s-prefix "besluitvorming:opmerking")
                                   :as "remarks") 
@@ -25,7 +24,7 @@
   :class (s-prefix "ext:DocumentVersie")
   :properties `((:version-number        :string   ,(s-prefix "ext:versieNummer"))
                 (:created               :datetime ,(s-prefix "dct:created"))
-                (:identification-number :string   ,(s-prefix "ext:idNumber"))
+                ;; this will hold the user overwritten name for the document version
                 (:chosen-file-name      :string   ,(s-prefix "ext:gekozenDocumentNaam")))
   :has-one `((file                      :via      ,(s-prefix "ext:file")
                                         :as "file")
