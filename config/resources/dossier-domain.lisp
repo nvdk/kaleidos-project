@@ -10,7 +10,7 @@
                                 :as "confidentiality")
              (case-type         :via      ,(s-prefix "dct:type")
                                 :as "type")
-             (policy-level      :via      ,(s-prefix "ext:heeftBeleidsNiveau")
+             (government-body   :via      ,(s-prefix "ext:heeftBeleidsNiveau")
                                 :as "policy-level")
              (meeting           :via      ,(s-prefix "ext:heeftBijbehorendeDossiers")
                                 :inverse t
@@ -43,19 +43,7 @@
   :features '(include-uri)
   :on-path "case-types")
 
-(define-resource policy-level ()
-  :class (s-prefix "ext:BeleidsNiveau")
-  :properties `((:label       :string ,(s-prefix "skos:prefLabel"))
-                (:scope-note  :string ,(s-prefix "skos:scopeNote"))
-                (:alt-label   :string ,(s-prefix "skos:altLabel")))
-  :has-many `((case            :via ,(s-prefix "ext:heeftBeleidsNiveau")
-                              :inverse t
-                              :as "cases"))
-  :resource-base (s-url "http://kanselarij.vo.data.gift/id/concept/beleidsniveaus/")
-  :features '(include-uri)
-  :on-path "policy-levels")
-
-  (define-resource submitter ()
+(define-resource submitter ()
   :class (s-prefix "ext:Indiener")
   :properties `((:label       :string ,(s-prefix "skos:prefLabel"))
                 (:scope-note  :string ,(s-prefix "skos:scopeNote"))
