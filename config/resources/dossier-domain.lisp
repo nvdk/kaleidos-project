@@ -15,12 +15,10 @@
              (meeting           :via      ,(s-prefix "ext:heeftBijbehorendeDossiers")
                                 :inverse t
                                 :as "related-meeting")
-             (submitter         :via      ,(s-prefix "ext:heeftIndiener")
+             (government-body   :via      ,(s-prefix "besluitvorming:heeftIndiener") ;; NOTE: used government-body instead of agent, as property currently only is used in OC context
                                 :as "submitter"))
   :has-many `((remark           :via      ,(s-prefix "besluitvorming:opmerking")
                                 :as "opmerking") ;; NOTE: opmerkingEN would be more suitable?
-              (person           :via      ,(s-prefix "besluitvorming:heeftIndiener") ;; NOTE: used persoon instead of agent
-                                :as "creators")
               (person           :via      ,(s-prefix "besluitvorming:heeftContactpersoon") ;; NOTE: used persoon instead of agent
                                 :as "contactPersons")
               (subcase          :via      ,(s-prefix "dct:hasPart")
@@ -42,18 +40,6 @@
   :resource-base (s-url "http://kanselarij.vo.data.gift/id/concept/dossier-type-codes/")
   :features '(include-uri)
   :on-path "case-types")
-
-(define-resource submitter ()
-  :class (s-prefix "ext:Indiener")
-  :properties `((:label       :string ,(s-prefix "skos:prefLabel"))
-                (:scope-note  :string ,(s-prefix "skos:scopeNote"))
-                (:alt-label   :string ,(s-prefix "skos:altLabel")))
-  :has-many `((case           :via ,(s-prefix "ext:heeftIndiener")
-                              :inverse t
-                              :as "cases"))
-  :resource-base (s-url "http://kanselarij.vo.data.gift/id/indieners/")
-  :features '(include-uri)
-  :on-path "submitters")
 
 (define-resource subcase ()
   :class (s-prefix "dbpedia:UnitOfWork")
