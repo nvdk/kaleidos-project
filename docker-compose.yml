@@ -61,14 +61,18 @@ services:
     restart: always
     logging: *default-logging
   musearch:
-    image: semtech/mu-search:0.1.0
-    links:
+   image: semtech/mu-search:0.6.0-beta.2
+   links:
       - elasticsearch:elasticsearch
-      - database-with-auth:db
+      - database-with-auth:database
     volumes:
       - ./config/elastic:/config
       - ./data/files:/data
-    logging: *default-logging
+   environment:
+     NUMBER_OF_THREADS: 4
+     JRUBY_OPTIONS: "-J-Xmx32g"
+     LOG_LEVEL: "info"
+   logging: *default-logging   
   elasticsearch:
     image: semtech/mu-search-elastic-backend
     container_name: elasticsearch
